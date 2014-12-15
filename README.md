@@ -1,3 +1,3 @@
 genepipe
 ========
-a PERL module to manage SNP genotypes
+a PERL module to manage large SNP genotypes
