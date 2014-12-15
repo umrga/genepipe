@@ -7,11 +7,22 @@ use Genotype::Individual;
 
 our $VERSION = '0.01';
 
-#-------------------------------------------------------------------------------
+#######################################################################################
+#--------------------------------------------------------------------------------------
 # public methods
-#-------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------
+#######################################################################################
 
+
+#-------------------------------------------------------------------------------
+# new
+#-------------------------------------------------------------------------------
 # the constructor only creates the object in memory. No parameters are needed
+#
+# _ind : hash of the genotyped individuals
+# _snpNameArray : array storing only the name of the SNP
+# _snpNameHash : this hash table give the correspondance between the name of the snp and indice
+
 sub new {
 	my $class = shift;
 	$class = ref($class) || $class;
@@ -20,11 +31,27 @@ sub new {
 	my $self = {};
 
 	$self->{_ind} = {};
+	$self->{_snpNameArray} = [];
+	$self->{_snpNameHash} = {};
+	
+	$self->{_nbSNP} = 0;
+	
 	bless $self,$class;
 	return $self;
 }
 
 
+#-------------------------------------------------------------------------------
+# readDataFromFile
+#-------------------------------------------------------------------------------
+
+# read genotype from file.
+# There's a two step reading procedure :
+#	- the 1st, get the number of snp and fill the SNP array and hash
+#	- the 2nd, read the genotype and fill the hash _ind
+#
+# During the 1st step, the genotype string in the IND object are initialised with 0,
+# depending on the number of SNP from  the 1st read
 
 sub readDataFromFile {
 	my ($self,$file) = @_;
