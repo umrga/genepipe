@@ -62,6 +62,7 @@ sub readDataFromFile {
         $ListIND{$id_geno} = defined;
         $ListSNP{$id_snp} = defined;
     }
+    close (GENO);
     # record number of SNP and Individual
     my $nbSNP = keys %ListSNP;
     my $nbIND = keys %ListIND;
@@ -81,6 +82,8 @@ sub readDataFromFile {
         $self->{_ind}->{$ind}="00"*$nbSNP;
     }
     #read the genotype and fill the hash _ind
+    open (GENO, "$file") or die "cannot open $file\n";
+
     while (my $line = <GENO>) {
         $line =~ s/\s+$//;
         next if ($line =~ /^#/);
@@ -98,11 +101,8 @@ sub readDataFromFile {
         my $a2 = $T[3];
         $self->{_ind}->{$id_geno}=substr($self->{_ind}->{$id_geno},0,$self->{_snpNameHash}->{$id_snp}*2).$a1.$a2.substr($self->{_ind}->{$id_geno},($self->{_snpNameHash}->{$id_snp}+1)*2);
     }
-    
-    
-    #$self->{_ind}->{$id_geno} = defined;
     close (GENO);
-    #$self->{_tracks}->{$indice} = $track;
+    
     return 1;
 }
 sub get_nbSNP {
